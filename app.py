@@ -23,10 +23,21 @@ def crear_usuario():
     return jsonify(data), 201
 
 #Ruta para actualizar un usuario existente
-
+@app.route('/usuarios/<int:id>', methods=['PUT'])
+def actualizar_usuario(id):
+    data = request.json
+    for u in usuarios:
+        if u['id'] == id:
+            u.update(data)
+            return jsonify(u)
+    return {'error': 'Usuario no encontrado'}, 404
 
 #Ruta para eliminar un usuario existente
-
+@app.route('/usuarios/<int:id>', methods=['DELETE'])
+def eliminar_usuario(id):
+    global usuarios
+    usuarios = [u for u in usuarios if u['id'] != id]
+    return '', 204
 
 if __name__ == '__main__':
     app.run(debug=True)
